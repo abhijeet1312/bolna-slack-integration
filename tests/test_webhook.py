@@ -121,3 +121,4 @@ def test_call_disconnected_does_not_alert(client, mock_slack):
     )
     assert r.status_code == 200
     assert mock_slack.await_count == 0
+
