@@ -40,7 +40,7 @@ EXPOSE 8000
 # Workers default to 2 — override with WEB_CONCURRENCY env var
 ENV WEB_CONCURRENCY=2
 CMD ["sh", "-c", "exec gunicorn app.main:app \
-    --bind 0.0.0.0:8000 \
+    --bind 0.0.0.0:${PORT:-8000} \
     --worker-class uvicorn.workers.UvicornWorker \
     --workers ${WEB_CONCURRENCY} \
     --access-logfile - \
