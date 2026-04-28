@@ -101,7 +101,7 @@ def test_webhook_handles_invalid_json(client):
 
 @pytest.mark.parametrize(
     "status_value",
-    ["completed", "failed", "no-answer", "busy", "canceled", "call-disconnected"],
+    ["completed", "failed", "no-answer", "busy", "canceled"],
 )
 def test_all_terminal_statuses_alert(client, mock_slack, status_value):
     r = client.post(
@@ -110,3 +110,14 @@ def test_all_terminal_statuses_alert(client, mock_slack, status_value):
     )
     assert r.status_code == 200
     assert mock_slack.await_count >= 1
+
+
+def test_call_disconnected_does_not_alert(client, mock_slack):
+    """call-disconnected arrives before 'completed' with stale duration=0;
+    we wait for 'completed' instead."""
+    r = client.post(
+        "/webhook?token=test-secret",
+        json=_payload(id="disconnected-1", status="call-disconnected"),
+    )
+    assert r.status_code == 200
+    assert mock_slack.await_count == 0
