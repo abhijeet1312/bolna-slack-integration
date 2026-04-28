@@ -41,7 +41,7 @@ logger = get_logger("api")
 TERMINAL_STATUSES = frozenset(
     {
         "completed",
-        "call-disconnected",
+        # "call-disconnected",
         "no-answer",
         "busy",
         "failed",
